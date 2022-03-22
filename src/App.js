@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from 'react'
+import getData from './services/getData'
 
 function App() {
-  const url = 'https://front-test-api.herokuapp.com/api/product';
-  const fechtApi = async () => {
-    const response = await fetch(url);
-    const responseJSON = await response.json();
-    console.log(responseJSON);
-  }
-
+  
+  const [products, setProducts] = useState([]);
+  console.log(products)
+  // Obtención datos API
   useEffect(() => {
-    fechtApi();
+    getData().then(products => setProducts(products))
   },[])
 
 
@@ -26,11 +24,28 @@ function App() {
       
       <main>
       <section className="product-container">
-      {/* <form action="">
-      <label for="product">Choose product: 
+      <section className="form--name">
+      <label htmlFor="product">Choose product: 
       <input type="text" id="product" name="product"/></label>
+      </section>
+      {/* <form action="">
+      
       </form> */}
-      <ul className="product-list"></ul>
+
+
+      {/* Listado de productos */}
+      <ul className="product-list">
+        {
+          products.map(element => {
+            return <li className="product-list--item" key= {element.id}>
+            <img src={element.imgUrl} alt=""/>
+            <p className="product-list--item-name">{element.brand}</p>
+            <p className="product-list--item-name">{element.model}</p>
+            <p className="product-list--item-name">{element.price}</p>
+            </li>
+          })
+        }
+      </ul>
 
       </section>
       </main>
