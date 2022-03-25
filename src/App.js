@@ -1,6 +1,7 @@
 
 import React, {useState, useEffect} from 'react'
 import getData from './services/getData'
+import Pdp from './components/Pdp'
 
 function App() {
   
@@ -48,19 +49,7 @@ function App() {
     console.log(e, "El elemento seleccionado es: storage")
    } 
 
-   const addProduct = async (id, selectStorage, selectColor) => {
-     console.log(id, selectStorage, selectColor)
-    const resposeProduct = await fetch('https://front-test-api.herokuapp.com/api/cart', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({id: id, colorGap: colorGap, storageGap:storageGap })
-  });
-  const content = await resposeProduct.json();
-  console.log(content.name)
-}
+   
    
 
   return (
@@ -104,36 +93,9 @@ function App() {
         }
       </ul>
 
-      <section className="product-item"></section>
-        <img src={details.imgUrl} alt=""/>
-        <div>
-          <ul className="product-item-description">  
-            <li> {details.brand}</li>  
-            <li> {details.model}</li> 
-            <li> {details.ram}</li>
-          </ul>
-        </div>
-        <div className="product-item-actions">
-        <form onSubmit={(e) => {e.preventDefault(); addProduct(id, storageGap, colorGap)}}>
-          <select name="color" id="color" value={colorGap.length === 1 ? colorGap[0].name : ""} onChange = {(e) => selectColor(e.target.value)}> {
-            colorGap.map((colorOptions, index) => {
-              {/* console.log(colorGap[0].name, "el único color") */}
-              return <option value={colorOptions.name} key={index}> {colorOptions.name}</option>
+      <Pdp details= {details} storageGap={storageGap} colorGap={colorGap} id={id} selectColor = {selectColor} selectStorage= {selectStorage} getProduct={getProduct}/>
 
-            })
-          }
-          </select>
-          <select name="storages" id="storages" value={storageGap.length === 1 ? storageGap[0].name : ""} onChange = {(e) => selectStorage(e.target.value)}> {
-            storageGap.map((storageOptions, index) => {
-              {/* console.log(storageOptions, "el único color") */}
-              return <option value={storageOptions.name} key={index}> {storageOptions.name}</option>
-            })
-          }
-          </select>    
-          <input type="submit" value="Add" />
-        </form>
-
-        </div>
+      
       </section>
       </main>
 
